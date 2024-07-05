@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "random-bible-verse"
+version = "0.1.0"
+description = "Random bible verse app"
+authors = ["jdjenontin <jdjenontin@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.11"
+sqlmodel = "^0.0.19"
+dash = "^2.17.1"
+dash-bootstrap-components = "^1.6.0"
+gunicorn = "^22.0.0"
+pydantic-settings = "^2.3.4"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.5.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

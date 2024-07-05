@@ -1,0 +1,12 @@
+services:
+  random-verse:
+    image: random-verse
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+
+    volumes:
+      - .env:/app/.env
+    
