@@ -64,7 +64,7 @@ The app is available on http://localhost:8000
 ```bash
 pip install poetry
 poetry instal
-python -m random_bible_verse
+python -m random_bible_verse.app
 ```
 
 The app is available on http://localhost:8050
