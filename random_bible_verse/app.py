@@ -32,7 +32,10 @@ app.layout = dbc.Container(
 )
 def update_verse(_):
     verse = get_random_verse_from_version(settings.BIBLE_VERSION)
-    return verse.verse_text, verse.reference
+    if verse:
+        return verse.verse_text, verse.reference
+    else :
+        return "Error", "Error"
 
 
 if __name__ == "__main__":
