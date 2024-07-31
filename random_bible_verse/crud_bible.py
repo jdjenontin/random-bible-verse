@@ -194,8 +194,7 @@ def get_random_book(version_name : str) -> Book:
         Book: The random book
     """
 
-    books = get_books(version_name)
-    return random.choice(books)
+    pass
 
 def get_random_chapter(version_name : str, book_name : str) -> Chapter:
     """Get a random chapter from a book
@@ -208,8 +207,7 @@ def get_random_chapter(version_name : str, book_name : str) -> Chapter:
         Chapter: The random chapter
     """
 
-    chapters = get_chapters(version_name, book_name)
-    return random.choice(chapters)
+    pass
 
 def get_random_verse(version_name : str, book_name : str, chapter_number : int) -> VerseDetails:
     """Get a random verse from a chapter
@@ -223,8 +221,7 @@ def get_random_verse(version_name : str, book_name : str, chapter_number : int) 
         VerseDetails: The random verse
     """
 
-    verses = get_verses(version_name, book_name, chapter_number)
-    return random.choice(verses)
+    pass
 
 def get_random_verse_from_version(version_name : str) -> VerseDetails:
     """Get a random verse from a version
@@ -236,8 +233,5 @@ def get_random_verse_from_version(version_name : str) -> VerseDetails:
         VerseDetails: The random verse
     """
     
-    book = get_random_book(version_name)
-    chapter = get_random_chapter(version_name, book.name)
-    verse = get_random_verse(version_name, book.name, chapter.number)
-    return verse
+    pass
     
