@@ -4,9 +4,10 @@ from sqlmodel import Session
 from random_bible_verse.models import Version, Book, Chapter, Verse
 from random_bible_verse.db import engine, create_db_tables
 
-def load_bible_from_json(version_name : str):
+
+def load_bible_from_json(version_name: str):
     with open(f"data/{version_name}.json") as f:
-        data : dict = json.load(f)
+        data: dict = json.load(f)
         version = Version(name=version_name)
 
         for book_name, book_data in data.items():
@@ -26,7 +27,7 @@ def load_bible_from_json(version_name : str):
             session.commit()
             session.refresh(version)
             return version
-        
+
 
 if __name__ == "__main__":
     create_db_tables()

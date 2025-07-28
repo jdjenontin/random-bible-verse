@@ -4,6 +4,7 @@ from random_bible_verse.models import Version, Book, Chapter, Verse, VerseDetail
 from random_bible_verse.db import engine
 import random
 
+
 def get_versions():
     """Get available versions"""
     with Session(engine) as session:
@@ -11,7 +12,8 @@ def get_versions():
         versions = session.exec(statement).all()
         return versions
 
-def get_version(version_name : str) -> Version:
+
+def get_version(version_name: str) -> Version:
     """Get a version by name
 
     Args:
@@ -24,9 +26,9 @@ def get_version(version_name : str) -> Version:
         statement = select(Version).where(Version.name == version_name)
         version = session.exec(statement).first()
         return version
-    
 
-def get_books(version_name : str) -> list[Book]:
+
+def get_books(version_name: str) -> list[Book]:
     """Get books of a version
 
     Args:
@@ -42,13 +44,14 @@ def get_books(version_name : str) -> list[Book]:
     version = get_version(version_name)
     if not version:
         raise ValueError(f"Version {version_name} not found")
-    
+
     with Session(engine) as session:
         statement = select(Book).where(Book.version_id == version.id)
         books = session.exec(statement).all()
         return books
-    
-def get_book(version_name : str, book_name : str) -> Book:
+
+
+def get_book(version_name: str, book_name: str) -> Book:
     """Get a book by name and version
 
     Args:
@@ -65,13 +68,18 @@ def get_book(version_name : str, book_name : str) -> Book:
     version = get_version(version_name)
     if not version:
         raise ValueError(f"Version {version_name} not found")
-    
+
     with Session(engine) as session:
-        statement = select(Book).where(Book.version_id == version.id).where(Book.name == book_name)
+        statement = (
+            select(Book)
+            .where(Book.version_id == version.id)
+            .where(Book.name == book_name)
+        )
         book = session.exec(statement).first()
         return book
 
-def get_chapters(version_name : str, book_name : str) -> list[Chapter]:
+
+def get_chapters(version_name: str, book_name: str) -> list[Chapter]:
     """Get chapters of a book
 
     Args:
@@ -88,13 +96,14 @@ def get_chapters(version_name : str, book_name : str) -> list[Chapter]:
     book = get_book(version_name, book_name)
     if not book:
         raise ValueError(f"Book {book_name} not found in version {version_name}")
-    
+
     with Session(engine) as session:
         statement = select(Chapter).where(Chapter.book_id == book.id)
         chapters = session.exec(statement).all()
         return chapters
 
-def get_chapter(version_name : str, book_name : str, chapter_number : int) -> Chapter:
+
+def get_chapter(version_name: str, book_name: str, chapter_number: int) -> Chapter:
     """Get a chapter by number, book and version
 
     Args:
@@ -112,13 +121,20 @@ def get_chapter(version_name : str, book_name : str, chapter_number : int) -> Ch
     book = get_book(version_name, book_name)
     if not book:
         raise ValueError(f"Book {book_name} not found in version {version_name}")
-    
+
     with Session(engine) as session:
-        statement = select(Chapter).where(Chapter.book_id == book.id).where(Chapter.number == chapter_number)
+        statement = (
+            select(Chapter)
+            .where(Chapter.book_id == book.id)
+            .where(Chapter.number == chapter_number)
+        )
         chapter = session.exec(statement).first()
         return chapter
-    
-def get_verses(version_name : str, book_name : str, chapter_number : int) -> list[VerseDetails]:
+
+
+def get_verses(
+    version_name: str, book_name: str, chapter_number: int
+) -> list[VerseDetails]:
     """Get verses of a chapter
 
     Args:
@@ -135,23 +151,31 @@ def get_verses(version_name : str, book_name : str, chapter_number : int) -> lis
 
     chapter = get_chapter(version_name, book_name, chapter_number)
     if not chapter:
-        raise ValueError(f"Chapter {chapter_number} not found in book {book_name} in version {version_name}")
-    
+        raise ValueError(
+            f"Chapter {chapter_number} not found in book {book_name} in version {version_name}"
+        )
+
     with Session(engine) as session:
         statement = select(Verse).where(Verse.chapter_id == chapter.id)
         verses = session.exec(statement).all()
 
-        verses = [VerseDetails(
-            version_name=version_name,
-            book_name=book_name,
-            chapter_number=chapter_number,
-            verse_number=verse.number,
-            verse_text=verse.text
-        ) for verse in verses]
-        
+        verses = [
+            VerseDetails(
+                version_name=version_name,
+                book_name=book_name,
+                chapter_number=chapter_number,
+                verse_number=verse.number,
+                verse_text=verse.text,
+            )
+            for verse in verses
+        ]
+
         return verses
-    
-def get_verse(version_name : str, book_name : str, chapter_number : int, verse_number : int) -> VerseDetails:
+
+
+def get_verse(
+    version_name: str, book_name: str, chapter_number: int, verse_number: int
+) -> VerseDetails:
     """Get a verse by number, chapter, book and version
 
     Args:
@@ -169,22 +193,27 @@ def get_verse(version_name : str, book_name : str, chapter_number : int, verse_n
 
     chapter = get_chapter(version_name, book_name, chapter_number)
     if not chapter:
-        raise ValueError(f"Chapter {chapter_number} not found in book {book_name} in version {version_name}")
-    
+        raise ValueError(
+            f"Chapter {chapter_number} not found in book {book_name} in version {version_name}"
+        )
+
     with Session(engine) as session:
-        statement = select(Verse).where(Verse.chapter_id == chapter.id).where(Verse.number == verse_number)
+        statement = (
+            select(Verse)
+            .where(Verse.chapter_id == chapter.id)
+            .where(Verse.number == verse_number)
+        )
         verse = session.exec(statement).first()
         return VerseDetails(
             version_name=version_name,
             book_name=book_name,
             chapter_number=chapter_number,
             verse_number=verse_number,
-            verse_text=verse.text
-        
+            verse_text=verse.text,
         )
-    
 
-def get_random_book(version_name : str) -> Book:
+
+def get_random_book(version_name: str) -> Book:
     """Get a random book from a version
 
     Args:
@@ -194,9 +223,11 @@ def get_random_book(version_name : str) -> Book:
         Book: The random book
     """
 
-    pass
+    books = get_books(version_name)
+    return random.choice(books)
 
-def get_random_chapter(version_name : str, book_name : str) -> Chapter:
+
+def get_random_chapter(version_name: str, book_name: str) -> Chapter:
     """Get a random chapter from a book
 
     Args:
@@ -207,9 +238,13 @@ def get_random_chapter(version_name : str, book_name : str) -> Chapter:
         Chapter: The random chapter
     """
 
-    pass
+    chapters = get_chapters(version_name, book_name)
+    return random.choice(chapters)
 
-def get_random_verse(version_name : str, book_name : str, chapter_number : int) -> VerseDetails:
+
+def get_random_verse(
+    version_name: str, book_name: str, chapter_number: int
+) -> VerseDetails:
     """Get a random verse from a chapter
 
     Args:
@@ -221,9 +256,11 @@ def get_random_verse(version_name : str, book_name : str, chapter_number : int) 
         VerseDetails: The random verse
     """
 
-    pass
+    verses = get_verses(version_name, book_name, chapter_number)
+    return random.choice(verses)
 
-def get_random_verse_from_version(version_name : str) -> VerseDetails:
+
+def get_random_verse_from_version(version_name: str) -> VerseDetails:
     """Get a random verse from a version
 
     Args:
@@ -232,6 +269,8 @@ def get_random_verse_from_version(version_name : str) -> VerseDetails:
     Returns:
         VerseDetails: The random verse
     """
-    
-    pass
-    
+
+    book = get_random_book(version_name)
+    chapter = get_random_chapter(version_name, book.name)
+    verse = get_random_verse(version_name, book.name, chapter.number)
+    return verse

@@ -11,4 +11,5 @@ class Settings(BaseSettings):
     def REFRESH_INTERVAL_MS(self) -> int:
         return self.REFRESH_INTERVAL * 1000
 
+
 settings = Settings()
