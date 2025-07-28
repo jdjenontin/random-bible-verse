@@ -53,7 +53,7 @@ The app is available on http://localhost:8000
 
 ```bash
 pip install poetry
-poetry instal
+poetry install
 gunicorn -b 0.0.0.0 random_bible_verse.app:server
 ```
 
@@ -63,7 +63,7 @@ The app is available on http://localhost:8000
 
 ```bash
 pip install poetry
-poetry instal
+poetry install
 python -m random_bible_verse.app
 ```
 
